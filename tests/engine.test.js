@@ -65,6 +65,90 @@ describe('rule: buzzwords 套话黑名单', () => {
   });
 });
 
+describe('rule: sections 关键板块', () => {
+  it('缺失板块逐个报 info（教育/工作/技能）', () => {
+    const r = lint('张三\n会写一点代码');
+    const ids = r.issues.filter((i) => i.rule === 'sections').map((i) => i.missing);
+    assert.ok(ids.includes('education'), '缺教育');
+    assert.ok(ids.includes('experience'), '缺工作/实习');
+    assert.ok(ids.includes('skills'), '缺技能');
+  });
+
+  it('板块齐全不报', () => {
+    const text = [
+      '张三 13800138000 zhangsan@example.com',
+      '工作经历：某公司 后端工程师 2020-2024',
+      '教育背景：某某大学 计算机 2016-2020',
+      '专业技能：TypeScript / Go',
+    ].join('\n');
+    const issues = lint(text).issues.filter((i) => i.rule === 'sections');
+    assert.equal(issues.length, 0);
+  });
+});
+
+describe('rule: contact 联系方式', () => {
+  it('缺邮箱或手机报 warn', () => {
+    const r = lint('张三\n工作经历\n主导重构，响应从 800ms 降至 120ms');
+    const issue = r.issues.find((i) => i.rule === 'contact');
+    assert.ok(issue);
+    assert.match(issue.message, /联系方式|邮箱|电话/);
+  });
+
+  it('手机+邮箱齐全不报', () => {
+    const text = '张三 13800138000 zhangsan@example.com\n主导重构，QPS 提升 3 倍';
+    const issues = lint(text).issues.filter((i) => i.rule === 'contact');
+    assert.equal(issues.length, 0);
+  });
+});
+
+describe('rule: privacy 敏感信息', () => {
+  it('检出身份证号 → severity=error', () => {
+    const text = '张三\n身份证号 110101199003077758\n主导重构，错误率下降 65%';
+    const issue = lint(text).issues.find((i) => i.rule === 'privacy');
+    assert.ok(issue);
+    assert.equal(issue.severity, 'error');
+  });
+
+  it('正常简历不误报', () => {
+    const issues = lint(healthyResume).issues.filter((i) => i.rule === 'privacy');
+    assert.equal(issues.length, 0);
+  });
+});
+
+describe('rule: bullet-length 长句', () => {
+  it('超过 60 字的陈述行报 info', () => {
+    const long = '主导订单系统重构' + '，把接口响应时间从 800ms 降到了 120ms'.repeat(3);
+    const r = lint(long);
+    const issue = r.issues.find((i) => i.rule === 'bullet-length');
+    assert.ok(issue);
+    assert.equal(issue.severity, 'info');
+  });
+});
+
+describe('engine: 聚合与边界（SCOPE 验收标准 3/4）', () => {
+  it('空输入不崩溃，返回引导性结果', () => {
+    const r = lint('');
+    assert.ok(r.score >= 0 && r.score <= 100);
+    assert.ok(Array.isArray(r.issues));
+  });
+
+  it('总分在 0-100，问题严重度降序排列', () => {
+    const bad = ['身份证号 110101199003077758', '吃苦耐劳，抗压能力强'].join('\n');
+    const r = lint(bad);
+    assert.ok(r.score >= 0 && r.score <= 100);
+    const sev = { error: 3, warn: 2, info: 1 };
+    for (let i = 1; i < r.issues.length; i++) {
+      assert.ok(sev[r.issues[i - 1].severity] >= sev[r.issues[i].severity], '应按严重度降序');
+    }
+  });
+
+  it('健康简历得分显著高于烂简历', () => {
+    const good = lint(healthyResume.repeat(4));
+    const bad = lint(['身份证号 110101199003077758', '吃苦耐劳，精通 Office，精通 Java', '负责打杂'].join('\n'));
+    assert.ok(good.score > bad.score, `good=${good.score} bad=${bad.score}`);
+  });
+});
+
 describe('rule: length 简历长度', () => {
   it('健康长度（600-1500 字）不报问题', () => {
     const padded = healthyResume.repeat(4);

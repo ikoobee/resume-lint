@@ -27,7 +27,7 @@ export function lengthRule(text) {
   return issues;
 }
 
-export const rules = [lengthRule, quantificationRule, passiveVoiceRule, buzzwordsRule];
+export const rules = [lengthRule, quantificationRule, passiveVoiceRule, buzzwordsRule, sectionsRule, contactRule, privacyRule, bulletLengthRule];
 
 // ── rule: quantification ─────────────────────────────────────
 // 成果类 bullet 中含量化（数字/%/倍数）的占比，≥40% 健康
@@ -100,6 +100,92 @@ export function buzzwordsRule(text) {
         message: `检出套话：${p.label}——初筛者每天看几百份这类词，已免疫`,
         hint: '删掉自我评价，用一条带数字的事实替代（「精通 SQL」→「为 40 张核心表写了慢查询治理方案，P99 降 80%」）',
       });
+    }
+  }
+  return issues;
+}
+
+// ── rule: sections ───────────────────────────────────────────
+// 关键板块存在性（标题行近似匹配）
+const SECTION_DEFS = [
+  { key: 'experience', label: '工作/实习经历', re: /(工作经历|实习经历|工作经历|职业经历|实习|工作)/ },
+  { key: 'education', label: '教育背景', re: /(教育|学历|院校|毕业|大学|本科|硕士|博士)/ },
+  { key: 'skills', label: '专业技能', re: /(技能|技术栈|技术能力|专业能力)/ },
+];
+
+export function sectionsRule(text) {
+  const issues = [];
+  for (const s of SECTION_DEFS) {
+    if (!s.re.test(text)) {
+      issues.push({
+        rule: 'sections',
+        severity: 'info',
+        missing: s.key,
+        message: `缺少「${s.label}」板块——初筛 10 秒内找不到关键信息就会跳过`,
+        hint: `补一个独立的「${s.label}」标题段`,
+      });
+    }
+  }
+  return issues;
+}
+
+// ── rule: contact ────────────────────────────────────────────
+const EMAIL_RE = /[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/;
+const PHONE_RE = /1[3-9]\d{9}|(?:\+?86[-\s]?)?1[3-9]\d{9}/;
+
+export function contactRule(text) {
+  const hasEmail = EMAIL_RE.test(text);
+  const hasPhone = PHONE_RE.test(text);
+  if (hasEmail && hasPhone) return [];
+  const missing = [];
+  if (!hasPhone) missing.push('手机号');
+  if (!hasEmail) missing.push('邮箱');
+  return [{
+    rule: 'contact',
+    severity: 'warn',
+    message: `联系方式缺失：${missing.join('、')}——HR 想约你却找不到入口`,
+    hint: '顶部放手机 + 常用邮箱（投外企建议 Gmail/Outlook）',
+  }];
+}
+
+// ── rule: privacy ────────────────────────────────────────────
+// 简历不该出现的敏感信息（泄露风险 + 外企合规直接拒）
+const PRIVACY_PATTERNS = [
+  { re: /\d{6}(19|20)\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])\d{3}[\dXx]/, label: '身份证号' },
+  { re: /(?:出生日期|生日|出生年月)\s*[:：]?\s*(19|20)\d{2}[年.\-/ ]/, label: '完整出生日期' },
+  { re: /(?:户籍|户口|籍贯)\s*[:：]/, label: '户籍信息' },
+  { re: /(?:政治面貌|党员|团员)\s*[:：]/, label: '政治面貌（非必需岗位）' },
+];
+
+export function privacyRule(text) {
+  const issues = [];
+  const seen = new Set();
+  for (const p of PRIVACY_PATTERNS) {
+    if (p.re.test(text) && !seen.has(p.label)) {
+      seen.add(p.label);
+      issues.push({
+        rule: 'privacy',
+        severity: 'error',
+        message: `简历含敏感信息：${p.label}——隐私泄露风险，且外企 ATS 场景属合规红线`,
+        hint: '删除。联系方式之外的个人敏感信息对求职几乎无增益',
+      });
+    }
+  }
+  return issues;
+}
+
+// ── rule: bullet-length ──────────────────────────────────────
+export function bulletLengthRule(text) {
+  const issues = [];
+  for (const line of bulletLines(text)) {
+    if (line.length > 60) {
+      issues.push({
+        rule: 'bullet-length',
+        severity: 'info',
+        message: `有超过 60 字的长句（${line.length} 字）——初筛者只读每条前半句`,
+        hint: '拆成两条：一条动作 + 一条结果',
+      });
+      break; // 一条足矣，避免刷屏
     }
   }
   return issues;
