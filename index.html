@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>resume-lint — 简历体检 · 你的简历不离开浏览器</title>
+  <meta name="description" content="3 分钟查出简历会被初筛卡在哪：量化密度、套话、敏感信息等 8 项检查。纯浏览器本地运行，简历永不上传。开源。">
+  <meta property="og:title" content="resume-lint — 简历体检">
+  <meta property="og:description" content="8 项规则 3 分钟体检你的简历。本地处理，永不上传。">
+  <meta property="og:type" content="website">
+  <link rel="stylesheet" href="styles/tokens.css">
+  <link rel="stylesheet" href="styles/app.css">
+</head>
+<body>
+  <!-- Hero：痛点 → 方案 → CTA（/landing-page 结构） -->
+  <header class="hero">
+    <p class="hero-badge">开源 · MIT</p>
+    <h1>简历投出去石沉大海，<br>问题出在哪你其实不知道</h1>
+    <p class="hero-sub">
+      3 分钟体检 8 项最常被初筛卡掉的问题——量化缺失、套话、敏感信息……
+      <strong>全程在你的浏览器里运行，简历一个字节都不会上传。</strong>
+    </p>
+    <a class="cta" href="#lint">免费体检我的简历</a>
+    <p class="hero-note">无需注册 · 无需上传 · <a href="https://github.com/ikoobee/resume-lint" rel="noopener">代码开源可审计</a></p>
+  </header>
+
+  <!-- 体检工作区 -->
+  <main id="lint" class="lint">
+    <label class="field-label" for="resume-input">把简历文本粘贴进来（Ctrl+A 全选你的简历内容复制即可）</label>
+    <textarea id="resume-input" rows="14" placeholder="张三  138****0000  you@example.com&#10;工作经历&#10;主导 xx 重构，接口响应从 800ms 降至 120ms…"></textarea>
+    <button id="run-btn" type="button">开始体检</button>
+
+    <!-- 空状态（六态之一）：引导而非空白 -->
+    <section id="result" class="result result-empty" hidden>
+      <div class="score-wrap">
+        <div id="score" class="score">--</div>
+        <div class="score-label">体检分</div>
+      </div>
+      <ul id="issues"></ul>
+      <p id="all-clear" class="all-clear" hidden>未发现问题——保持并发到目标岗位试试。</p>
+    </section>
+  </main>
+
+  <!-- 为什么本地处理（社会证明/信任区） -->
+  <section class="trust">
+    <h2>为什么「不上传」很重要</h2>
+    <p>在线简历工具需要你把简历传到它的服务器——你的手机号、经历、教育背景从此存在别处。</p>
+    <p>resume-lint 的全部规则在<strong>你的浏览器本地</strong>执行：断网也能用，引擎代码开源可审计。</p>
+  </section>
+
+  <footer class="footer">
+    <p>resume-lint · <a href="https://github.com/ikoobee/resume-lint" rel="noopener">GitHub</a> ·
+       基础检查永久免费 · <span id="version">v0.1.0</span></p>
+    <p class="tiny">本页不使用 Cookie、不收集任何数据。</p>
+  </footer>
+
+  <script type="module" src="app.js"></script>
+</body>
+</html>
