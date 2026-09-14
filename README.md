@@ -55,7 +55,7 @@ Currently tuned for Chinese resumes; an English rule set is on the roadmap.
 
 ## Roadmap
 
-- [ ] .txt / .md file drop
+- [x] .txt / .md file drop
 - [ ] English resume rule set
 - [ ] CLI (`npx resume-lint resume.txt`)
 - [ ] Detailed rewrite report (paid tier — basic checks stay free, forever)

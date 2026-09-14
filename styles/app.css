@@ -69,6 +69,19 @@ textarea:focus-visible { outline: 2px solid var(--primary-500); outline-offset: 
 }
 #run-btn:hover { background: var(--primary-600); }
 #run-btn:active { transform: translateY(1px); }
+#file-btn {
+  margin-top: var(--space-4);
+  margin-left: var(--space-3);
+  background: transparent;
+  color: var(--primary-600);
+  border: 1px solid var(--primary-500);
+  font-size: var(--text-base);
+  padding: var(--space-3) var(--space-6);
+  border-radius: var(--radius-md);
+  cursor: pointer;
+}
+#file-btn:hover { background: var(--primary-50); }
+textarea.drag-over { border-color: var(--primary-500); background: var(--primary-50); }
 
 /* 结果区 */
 .result {

@@ -56,7 +56,7 @@ const { score, issues } = lint(resumeText);
 
 ## Roadmap
 
-- [ ] .txt / .md 文件拖入
+- [x] .txt / .md 文件拖入
 - [ ] 英文简历规则集
 - [ ] CLI（`npx resume-lint resume.txt`）
 - [ ] 详细改写报告（付费层，基础检查永不收费）
