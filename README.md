@@ -4,6 +4,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![tests](https://img.shields.io/badge/tests-19%2F19-brightgreen)](#contributing)
 
+**Try it online: <https://resume-lint.ikoobee.com>** — or run it anywhere (see below). It works exactly the same offline.
+
 ![](og-image.png)
 
 ## Why

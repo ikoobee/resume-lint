@@ -4,6 +4,8 @@
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![tests](https://img.shields.io/badge/tests-19%2F19-brightgreen)](README.zh-CN.md#贡献)
 
+**在线使用：<https://resume-lint.ikoobee.com>** —— 或按下方任意方式自托管，断网用法完全一致。
+
 ![](og-image.png)
 
 [English](README.md) · 中文

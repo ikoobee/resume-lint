@@ -28,7 +28,7 @@
   欢迎拿自己的简历试一下拍砖
 - 英文简历规则集还在路上
 
-在线用：https://（部署后填）
+在线用：https://resume-lint.ikoobee.com
 源码：https://github.com/ikoobee/resume-lint
 
 特别想听正在找工作/刚改完简历的朋友说说：还希望它查什么？

@@ -14,7 +14,10 @@ Show HN: Resume-lint – Check your resume locally, it never leaves your browser
 
 **首评（maker comment）**：
 
-Maker here. Background: I kept sending out resumes and hearing nothing back, and
+Maker here. Try it: https://resume-lint.ikoobee.com (open DevTools — the network tab
+stays empty after the page loads; that's the whole point).
+
+Background: I kept sending out resumes and hearing nothing back, and
 I couldn't tell whether the problem was my resume or the market. Every online
 checker I found wanted me to upload my resume to their server first — phone
 number, full work history, education, everything.
