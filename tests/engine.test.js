@@ -15,7 +15,11 @@ const healthyResume = [
 
 describe('rule: length 简历长度', () => {
   it('健康长度（600-1500 字）不报问题', () => {
-    const r = lint(healthyResume.repeat(2)); // 拉长到区间内
+    const padded = healthyResume.repeat(4);
+    // 夹具自检：确保长度确实落在健康区间（防止夹具悄悄失效）
+    const len = padded.replace(/\s/g, '').length;
+    assert.ok(len >= 600 && len <= 1500, `夹具长度 ${len} 不在 600-1500，请修夹具`);
+    const r = lint(padded);
     const issues = r.issues.filter((i) => i.rule === 'length');
     assert.equal(issues.length, 0);
   });
