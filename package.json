@@ -1,0 +1,11 @@
+{
+  "name": "resume-lint",
+  "version": "0.1.0",
+  "description": "Local-first resume linter — your resume never leaves the browser",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "test": "node --test tests/"
+  },
+  "license": "MIT"
+}
