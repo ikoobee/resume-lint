@@ -1,63 +1,68 @@
 # resume-lint
 
-> 简历体检器——3 分钟查出你的简历会被初筛卡在哪。**纯浏览器本地运行，简历一个字节都不上传。**
+> Lint your resume before a recruiter does. **Runs 100% in your browser — your resume never leaves your machine.**
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE) [![tests](https://img.shields.io/badge/tests-19%2F19-brightgreen)](#contributing)
 
-![](docs/demo.png)
+![](og-image.png)
 
-## 为什么
+## Why
 
-简历投出去石沉大海，你不知道问题出在简历还是岗位。在线工具要你上传简历——
-手机号、经历、教育背景从此存在别人的服务器上。
+You send out resumes and hear nothing back. You don't know if the problem is the job market or your resume — and every online checker wants you to **upload your resume to their server first** (phone number, work history, education and all).
 
-resume-lint 把检查做成 lint：**断网也能跑，引擎开源可审计**。
+resume-lint treats your resume like code: paste it, get a report. **Works offline. Open source. Auditable.**
 
-## Quick start（30 秒）
+## Quick start (30 seconds)
 
 ```bash
 git clone https://github.com/ikoobee/resume-lint && cd resume-lint
-npx serve .        # 或任意静态服务器；直接双击 index.html 也可以
+npx serve .        # or any static server — opening index.html directly also works
 ```
 
-粘贴简历全文 → 点「开始体检」→ 得到 0-100 分与问题清单。
+Paste your resume text → hit the button → get a 0-100 score with an issue list.
 
-也可以只用作库：
+Or use the engine as a library:
 
 ```js
 import { lint } from './engine/index.js';
 const { score, issues } = lint(resumeText);
 ```
 
-## 检查的 8 项规则
+## The 8 rules
 
-| 规则 | 查什么 | 级别 |
+| Rule | What it catches | Severity |
 |---|---|---|
-| privacy | 身份证号/完整生日/户籍/政治面貌——外企合规红线 | ⛔ error |
-| length | 过短（<600 字）撑不起说服力 / 过长（>1500 字） | ⚠️ |
-| quantification | 成果描述的量化占比（建议 ≥40%） | ⚠️ |
-| passive-voice | 「负责/参与/配合」多于「主导/搭建/设计」——像职责不像战绩 | ⚠️ |
-| buzzwords | 吃苦耐劳/抗压能力强/精通连用/互联网黑话 | ⚠️ |
-| contact | 手机/邮箱缺失 | ⚠️ |
-| sections | 教育/工作/技能板块缺失 | 💡 |
-| bullet-length | 超 60 字长句 | 💡 |
+| privacy | National ID / full birth date / household registration — compliance red flags | ⛔ error |
+| length | Too thin (<500 chars) / too long (>1500) | ⚠️ |
+| quantification | <40% of bullets contain numbers, percentages, scale | ⚠️ |
+| passive-voice | More "responsible for / assisted with" than "led / built / designed" — reads like a job description, not achievements | ⚠️ |
+| buzzwords | Cliché self-evaluations and buzzword soup | ⚠️ |
+| contact | Missing phone or email | ⚠️ |
+| sections | Missing education / experience / skills sections | 💡 |
+| bullet-length | Bullets over 60 chars that nobody finishes reading | 💡 |
 
-规则是纯函数（`(text) => issues[]`），欢迎加规则：fork → `engine/rules.js` 加一个导出 → 带 2 个单测（正/反）→ PR。
+Rules are pure functions (`(text) => issues[]`). Adding one is welcome: fork → export a rule in `engine/rules.js` → include a positive and a negative test → PR.
 
-## 与同类工具的差异
+## How it differs
 
-| | resume-lint | 在线简历工具（Jobscan/超级简历等） |
+| | resume-lint | Online resume tools |
 |---|---|---|
-| 简历数据 | **不出浏览器** | 上传服务器 |
-| 价格 | 基础检查永久免费 | 订阅 $49/月 或会员 |
-| 形态 | 开源引擎 + 静态页 | 账号制 SaaS |
+| Your data | **Never leaves the browser** | Uploaded to a server |
+| Price | Basic checks free forever | $49/mo subscriptions |
+| Shape | Open-source engine + static page | Account-based SaaS |
+
+Currently tuned for Chinese resumes; an English rule set is on the roadmap.
 
 ## Roadmap
 
-- [ ] .txt / .md 文件拖入
-- [ ] 英文简历规则集
-- [ ] CLI（`npx resume-lint resume.txt`）
-- [ ] 详细改写报告（付费层，基础检查永不收费）
+- [ ] .txt / .md file drop
+- [ ] English resume rule set
+- [ ] CLI (`npx resume-lint resume.txt`)
+- [ ] Detailed rewrite report (paid tier — basic checks stay free, forever)
+
+## Contributing
+
+PRs welcome, especially new rules with tests. Run `npm test` (19/19 expected) before submitting.
 
 ## License
 

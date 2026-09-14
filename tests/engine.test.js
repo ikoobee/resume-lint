@@ -150,11 +150,11 @@ describe('engine: 聚合与边界（SCOPE 验收标准 3/4）', () => {
 });
 
 describe('rule: length 简历长度', () => {
-  it('健康长度（600-1500 字）不报问题', () => {
+  it('健康长度（500-1500 字）不报问题', () => {
     const padded = healthyResume.repeat(4);
     // 夹具自检：确保长度确实落在健康区间（防止夹具悄悄失效）
     const len = padded.replace(/\s/g, '').length;
-    assert.ok(len >= 600 && len <= 1500, `夹具长度 ${len} 不在 600-1500，请修夹具`);
+    assert.ok(len >= 500 && len <= 1500, `夹具长度 ${len} 不在 500-1500，请修夹具`);
     const r = lint(padded);
     const issues = r.issues.filter((i) => i.rule === 'length');
     assert.equal(issues.length, 0);
@@ -165,6 +165,14 @@ describe('rule: length 简历长度', () => {
     const issue = r.issues.find((i) => i.rule === 'length');
     assert.ok(issue, '应产出 length issue');
     assert.equal(issue.severity, 'warn');
-    assert.match(issue.message, /600|过短|太少/);
+    assert.match(issue.message, /500|过短/);
+  });
+
+  it('校准回归：490 字的精简一页简历不触发 length（下限 500）', () => {
+    const text = '主'.repeat(490); // 边界下侧
+    const below = lint(text).issues.some((i) => i.rule === 'length');
+    assert.ok(below, '490 字应仍报过短');
+    const ok = lint('主'.repeat(510));
+    assert.equal(ok.issues.filter((i) => i.rule === 'length').length, 0, '510 字不应报');
   });
 });

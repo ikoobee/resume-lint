@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- resume-lint favicon：绿底圆角 + lint 报告三杠 -->
+  <rect width="64" height="64" rx="13" fill="#059669"/>
+  <rect x="19" y="19" width="26" height="5" rx="2.5" fill="#fff"/>
+  <rect x="19" y="29" width="34" height="5" rx="2.5" fill="#fff"/>
+  <rect x="19" y="39" width="20" height="5" rx="2.5" fill="#fff"/>
+</svg>

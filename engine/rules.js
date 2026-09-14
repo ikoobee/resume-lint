@@ -5,15 +5,16 @@ const SEVERITY = { error: 3, warn: 2, info: 1 };
 export { SEVERITY };
 
 // ── rule: length ─────────────────────────────────────────────
-// 中文简历健康区间 600-1500 字（去空白）
+// 中文简历健康区间 500-1500 字（去空白）
+// 校准 2026-09-15：下限从 600 放宽到 500——一页精简简历（校招/转岗）常在 500-800 字
 export function lengthRule(text) {
   const len = text.replace(/\s/g, '').length;
   const issues = [];
-  if (len < 600) {
+  if (len < 500) {
     issues.push({
       rule: 'length',
       severity: 'warn',
-      message: `简历内容过短（约 ${len} 字）——低于 600 字通常撑不起经历的说服力`,
+      message: `简历内容过短（约 ${len} 字）——低于 500 字通常撑不起经历的说服力`,
       hint: '每段经历用 3-5 条成果描述补足，写「做了什么+效果数据」',
     });
   } else if (len > 1500) {
