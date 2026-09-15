@@ -27,7 +27,6 @@
 - 发布帖由用户账号发（V2EX/HN 需真实账号信誉），AI 备好草稿与回复预案
 
 ## 环境与注意事项
-- push 前仓库身份三连（见 d:\dev\CLAUDE.md）
+- push 前仓库身份三连（见 d:\dev\CLAUDE.md）；本仓现位于 `d:\dev\oss\resume-lint`（2026-09-15 迁移完成并核验）
 - 测试 `npm test`（19/19）；Pages 连 main 自动部署，push 即上线
-- **待迁移**：本仓将移入 `d:\dev\oss\`（2026-09-15 因 VSCode 句柄锁定顺延，见 TODO M1）；git 仓库自包含，移动无风险，远端与 Pages 不受影响
 - 变现定位（ARCHITECTURE.md 定稿）：触发付费时 **L0 数字内容交付起步**（《简历改写手册》上架 LS/Polar），按阶梯证据升档
